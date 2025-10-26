@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import {
   ConstructorPage,
   Feed,
@@ -15,91 +15,61 @@ import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route/protected-route';
+import { text } from 'node:stream/consumers';
 
-const App = () => (
-  <div className={styles.app}>
-    <AppHeader />
+const App = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    <Routes>
-      <Route path='/' element={<ConstructorPage />} />
-      {/*<Route path='/feed' element={<Feed />} />*/}
-      {/*<Route*/}
-      {/*  path='/login'*/}
-      {/*  element={*/}
-      {/*    <ProtectedRoute>*/}
-      {/*      <Login />*/}
-      {/*    </ProtectedRoute>*/}
-      {/*  }*/}
-      {/*/>*/}
-      {/*<Route*/}
-      {/*  path='/register'*/}
-      {/*  element={*/}
-      {/*    <ProtectedRoute>*/}
-      {/*      <Register />*/}
-      {/*    </ProtectedRoute>*/}
-      {/*  }*/}
-      {/*/>*/}
-      {/*<Route*/}
-      {/*  path='/forgot-password'*/}
-      {/*  element={*/}
-      {/*    <ProtectedRoute>*/}
-      {/*      <ForgotPassword />*/}
-      {/*    </ProtectedRoute>*/}
-      {/*  }*/}
-      {/*/>*/}
-      {/*<Route*/}
-      {/*  path='/reset-password'*/}
-      {/*  element={*/}
-      {/*    <ProtectedRoute>*/}
-      {/*      <ResetPassword />*/}
-      {/*    </ProtectedRoute>*/}
-      {/*  }*/}
-      {/*/>*/}
-      {/*<Route*/}
-      {/*  path='/profile'*/}
-      {/*  element={*/}
-      {/*    <ProtectedRoute>*/}
-      {/*      <Profile />*/}
-      {/*    </ProtectedRoute>*/}
-      {/*  }*/}
-      {/*/>*/}
-      {/*<Route*/}
-      {/*  path='/profile/orders'*/}
-      {/*  element={*/}
-      {/*    <ProtectedRoute>*/}
-      {/*      <ProfileOrders />*/}
-      {/*    </ProtectedRoute>*/}
-      {/*  }*/}
-      {/*/>*/}
-      {/*<Route*/}
-      {/*  path='/feed/:number'*/}
-      {/*  element={*/}
-      {/*    <Modal title='Информация о заказе' onClose={() => null}>*/}
-      {/*      <OrderInfo />*/}
-      {/*    </Modal>*/}
-      {/*  }*/}
-      {/*/>*/}
-      <Route
-        path='/ingredients/:id'
-        element={
-          <Modal title='Детали ингридиента' onClose={() => null}>
-            <IngredientDetails />
-          </Modal>
-        }
-      />
-      {/*<Route*/}
-      {/*  path='/profile/orders/:number'*/}
-      {/*  element={*/}
-      {/*    <ProtectedRoute>*/}
-      {/*      <Modal title='Информация о заказе' onClose={() => null}>*/}
-      {/*        <OrderInfo />*/}
-      {/*      </Modal>*/}
-      {/*    </ProtectedRoute>*/}
-      {/*  }*/}
-      {/*/>*/}
-      <Route path='*' element={<NotFound404 />} />
-    </Routes>
-  </div>
-);
+  const backgroundLocation = location.state?.background;
+
+  const onModalClose = (): void => {
+    navigate(-1);
+  };
+
+  return (
+    <div className={styles.app}>
+      <AppHeader />
+
+      <Routes location={backgroundLocation || location}>
+        <Route path='/' element={<ConstructorPage />} />
+        <Route
+          path='/ingredients/:id'
+          element={
+            <div className={styles.detailPageWrap}>
+              <h2
+                className={`${styles.detailHeader} text text_type_main-large`}
+              >
+                Детали ингредиента
+              </h2>
+              <IngredientDetails />
+            </div>
+          }
+        />
+        <Route
+          path='*'
+          element={
+            <div className={styles.detailPageWrap}>
+              <NotFound404 />
+            </div>
+          }
+        />
+      </Routes>
+
+      {backgroundLocation && (
+        <Routes>
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal title='' onClose={onModalClose}>
+                <IngredientDetails />
+              </Modal>
+            }
+          />
+        </Routes>
+      )}
+    </div>
+  );
+};
 
 export default App;

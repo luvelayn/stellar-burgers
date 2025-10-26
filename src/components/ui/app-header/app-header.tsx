@@ -7,7 +7,7 @@ import {
   Logo,
   ProfileIcon
 } from '@zlden/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
   <header className={styles.header}>
@@ -15,11 +15,16 @@ export const AppHeaderUI: FC<TAppHeaderUIProps> = ({ userName }) => (
       <div className={styles.menu_part_left}>
         <>
           <BurgerIcon type={'primary'} />
-          <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
+          <NavLink
+            to='/'
+            className={({ isActive }) =>
+              isActive ? styles.link_active : styles.link
+            }
+          >
             <p className='text text_type_main-default ml-2 mr-10'>
               Конструктор
             </p>
-          </Link>
+          </NavLink>
         </>
         <>
           <ListIcon type={'primary'} />
