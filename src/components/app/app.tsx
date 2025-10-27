@@ -15,7 +15,6 @@ import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
 import { ProtectedRoute } from '../protected-route/protected-route';
-import { text } from 'node:stream/consumers';
 
 const App = () => {
   const navigate = useNavigate();

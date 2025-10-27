@@ -1,17 +1,6 @@
-import { TOrder } from '@utils-types';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { orderBurgerApi } from '@api';
-
-export const createOrder = createAsyncThunk(
-  'order/create',
-  async (data: string[]) => orderBurgerApi(data)
-);
-
-type TOrderState = {
-  request: boolean;
-  error: string | null;
-  order: TOrder | null;
-};
+import { createSlice } from '@reduxjs/toolkit';
+import { createOrder } from './actions';
+import { TOrderState } from './type';
 
 const initialState: TOrderState = {
   request: false,

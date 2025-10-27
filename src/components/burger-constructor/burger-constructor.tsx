@@ -2,15 +2,12 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
-import {
-  clearOrder,
-  createOrder,
-  selectOrder
-} from '../../services/slices/orderSlice';
+import { clearOrder, selectOrder } from '../../services/order/orderSlice';
+import { createOrder } from '../../services/order/actions';
 import {
   clearBurgerConstructor,
   selectBurgerConstructor
-} from '../../services/slices/burgerConstructorSlice';
+} from '../../services/burgerConstructor/slice';
 
 export const BurgerConstructor: FC = () => {
   const constructorItems = useSelector(selectBurgerConstructor);
