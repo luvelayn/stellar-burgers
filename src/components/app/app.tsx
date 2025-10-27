@@ -19,6 +19,7 @@ import { ProtectedRoute } from '../protected-route/protected-route';
 
 import { useDispatch } from '../../services/store';
 import { checkUserAuth } from '../../services/user/actions';
+import { getIngredients } from '../../services/ingredients/actions';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(checkUserAuth());
+    dispatch(getIngredients());
   }, []);
 
   const onModalClose = (): void => {

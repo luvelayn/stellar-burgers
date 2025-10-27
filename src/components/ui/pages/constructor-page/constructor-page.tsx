@@ -7,12 +7,11 @@ import { Preloader } from '@ui';
 import { BurgerIngredients, BurgerConstructor } from '@components';
 
 export const ConstructorPageUI: FC<ConstructorPageUIProps> = ({
-  ingredients,
-  loading,
+  isLoading,
   error
 }) => (
   <>
-    {loading ? (
+    {isLoading ? (
       <Preloader />
     ) : (
       <main className={styles.containerMain}>
@@ -25,7 +24,7 @@ export const ConstructorPageUI: FC<ConstructorPageUIProps> = ({
           {error ? (
             <div>Ошибка загрузки ингредиентов: {error}</div>
           ) : (
-            <BurgerIngredients ingredients={ingredients} />
+            <BurgerIngredients />
           )}
           <BurgerConstructor />
         </div>

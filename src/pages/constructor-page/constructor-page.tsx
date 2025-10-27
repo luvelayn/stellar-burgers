@@ -1,23 +1,21 @@
-import { useSelector, useDispatch } from '../../services/store';
-import { selectIngredients } from '../../services/ingredients/slice';
-import { getIngredients } from '../../services/ingredients/actions';
+import { useSelector } from '../../services/store';
+import {
+  selectIngredientsError,
+  selectIsIngredientsLoading
+} from '../../services/ingredients/slice';
 
 import styles from './constructor-page.module.css';
 
 import { BurgerIngredients } from '@components';
 import { BurgerConstructor } from '@components';
 import { Preloader } from '@ui';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 
 export const ConstructorPage: FC = () => {
-  const { ingredients, loading, error } = useSelector(selectIngredients);
-  const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsIngredientsLoading);
+  const error = useSelector(selectIngredientsError);
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <Preloader />;
   }
 
@@ -39,7 +37,7 @@ export const ConstructorPage: FC = () => {
           Соберите бургер
         </h1>
         <div className={`${styles.main} pl-5 pr-5`}>
-          <BurgerIngredients ingredients={ingredients} />
+          <BurgerIngredients />
           <BurgerConstructor />
         </div>
       </main>
