@@ -8,15 +8,24 @@ import {
   clearBurgerConstructor,
   selectBurgerConstructor
 } from '../../services/burgerConstructor/slice';
+import { selectUser } from '../../services/user/slice';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
-  const constructorItems = useSelector(selectBurgerConstructor);
-
-  const { request, error, order } = useSelector(selectOrder);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const constructorItems = useSelector(selectBurgerConstructor);
+  const { request, error, order } = useSelector(selectOrder);
+  const user = useSelector(selectUser);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || request) return;
+
+    if (!user) {
+      navigate('/login');
+      return;
+    }
 
     dispatch(
       createOrder([

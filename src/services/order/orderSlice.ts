@@ -33,8 +33,6 @@ export const orderSlice = createSlice({
       .addCase(createOrder.fulfilled, (state, action) => {
         state.request = false;
         state.order = action.payload.order;
-        console.log(action.payload.name);
-        console.log(action.payload.order);
       });
   }
 });

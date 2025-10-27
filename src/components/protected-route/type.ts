@@ -1,5 +1,6 @@
 import React from 'react';
 
 export type ProtectedRouteProps = {
-  children: React.ReactElement;
+  children: React.JSX.Element;
+  onlyUnAuth?: boolean;
 };
