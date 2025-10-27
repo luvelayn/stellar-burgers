@@ -2,7 +2,12 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
-import { clearOrder, selectOrder } from '../../services/order/orderSlice';
+import {
+  clearOrder,
+  selectIsOrderLoading,
+  selectOrder,
+  selectOrderError
+} from '../../services/order/slice';
 import { createOrder } from '../../services/order/actions';
 import {
   clearBurgerConstructor,
@@ -16,11 +21,13 @@ export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
 
   const constructorItems = useSelector(selectBurgerConstructor);
-  const { request, error, order } = useSelector(selectOrder);
+  const order = useSelector(selectOrder);
+  const isLoading = useSelector(selectIsOrderLoading);
+  const error = useSelector(selectOrderError);
   const user = useSelector(selectUser);
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || request) return;
+    if (!constructorItems.bun || isLoading) return;
 
     if (!user) {
       navigate('/login');
@@ -52,7 +59,7 @@ export const BurgerConstructor: FC = () => {
   return (
     <BurgerConstructorUI
       price={price}
-      orderRequest={request}
+      orderRequest={isLoading}
       constructorItems={constructorItems}
       orderModalData={order}
       orderError={error}

@@ -1,5 +1,6 @@
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useMatch } from 'react-router-dom';
 
 import {
   ConstructorPage,
@@ -22,6 +23,8 @@ import { checkUserAuth } from '../../services/user/actions';
 import { getIngredients } from '../../services/ingredients/actions';
 
 const App = () => {
+  const feedMatch = useMatch(`/feed/:number`);
+  const profileMatch = useMatch('/profile/orders/:number');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -85,6 +88,14 @@ const App = () => {
           }
         />
         <Route
+          path='/profile/orders'
+          element={
+            <ProtectedRoute>
+              <ProfileOrders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path='/ingredients/:id'
           element={
             <div className={styles.detailPageWrap}>
@@ -95,6 +106,24 @@ const App = () => {
               </h2>
               <IngredientDetails />
             </div>
+          }
+        />
+        <Route
+          path='/feed/:number'
+          element={
+            <div className={styles.detailPageWrap}>
+              <OrderInfo />
+            </div>
+          }
+        />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
+              <div className={styles.detailPageWrap}>
+                <OrderInfo />
+              </div>
+            </ProtectedRoute>
           }
         />
         <Route
@@ -115,6 +144,30 @@ const App = () => {
               <Modal title='' onClose={onModalClose}>
                 <IngredientDetails />
               </Modal>
+            }
+          />
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal
+                title={`#${feedMatch?.params.number}` || ''}
+                onClose={onModalClose}
+              >
+                <OrderInfo />
+              </Modal>
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <ProtectedRoute>
+                <Modal
+                  title={`#${profileMatch?.params.number}` || ''}
+                  onClose={onModalClose}
+                >
+                  <OrderInfo />
+                </Modal>
+              </ProtectedRoute>
             }
           />
         </Routes>

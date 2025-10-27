@@ -1,7 +1,7 @@
 import { TOrder } from '@utils-types';
 
 export type TOrderState = {
-  request: boolean;
+  isLoading: boolean;
   error: string | null;
   order: TOrder | null;
 };
