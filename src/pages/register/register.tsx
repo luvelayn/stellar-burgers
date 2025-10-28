@@ -2,10 +2,7 @@ import { FC, SyntheticEvent, useState } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { registerUser } from '../../services/user/actions';
-import {
-  selectIsAuthRequest,
-  selectUserError
-} from '../../services/user/slice';
+import { userSelectors } from '../../services/user/slice';
 import { Preloader } from '@ui';
 
 export const Register: FC = () => {
@@ -14,15 +11,15 @@ export const Register: FC = () => {
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
-  const error = useSelector(selectUserError);
-  const isAuthRequest = useSelector(selectIsAuthRequest);
+  const error = useSelector(userSelectors.selectError);
+  const isLoading = useSelector(userSelectors.selectIsLoading);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     dispatch(registerUser({ email, password, name }));
   };
 
-  if (isAuthRequest) {
+  if (isLoading) {
     return <Preloader />;
   }
 

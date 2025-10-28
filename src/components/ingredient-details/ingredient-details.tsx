@@ -3,11 +3,11 @@ import { Preloader } from '@ui';
 import { IngredientDetailsUI } from '@ui';
 import { useParams } from 'react-router-dom';
 import { useSelector } from '../../services/store';
-import { selectIngredients } from '../../services/ingredients/slice';
+import { ingredientsSelectors } from '../../services/ingredients/slice';
 
 export const IngredientDetails: FC = () => {
   const { id } = useParams();
-  const ingredients = useSelector(selectIngredients);
+  const ingredients = useSelector(ingredientsSelectors.selectIngredients);
 
   const ingredientData =
     ingredients.find((ingredient) => ingredient._id === id) || null;

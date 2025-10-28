@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getIngredients } from './actions';
 import { TIngredientsState } from './type';
+import {
+  handleFulfilled,
+  handlePending,
+  handleRejected
+} from '../../utils/asyncHandlers';
 
 const initialState: TIngredientsState = {
   ingredients: [],
@@ -14,28 +19,18 @@ export const ingredientsSlice = createSlice({
   reducers: {},
   selectors: {
     selectIngredients: (state) => state.ingredients,
-    selectIngredientsError: (state) => state.error,
-    selectIsIngredientsLoading: (state) => state.isLoading
+    selectError: (state) => state.error,
+    selectIsLoading: (state) => state.isLoading
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getIngredients.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(getIngredients.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message ?? 'Произошла неизвестная ошибка';
-      })
       .addCase(getIngredients.fulfilled, (state, action) => {
-        state.isLoading = false;
+        handleFulfilled(state);
         state.ingredients = action.payload;
-      });
+      })
+      .addCase(getIngredients.pending, handlePending)
+      .addCase(getIngredients.rejected, handleRejected);
   }
 });
 
-export const {
-  selectIngredients,
-  selectIngredientsError,
-  selectIsIngredientsLoading
-} = ingredientsSlice.selectors;
+export const ingredientsSelectors = ingredientsSlice.selectors;

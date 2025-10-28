@@ -2,17 +2,13 @@ import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from '../../services/store';
-import {
-  selectFeedError,
-  selectFeedOrders,
-  selectIsFeedLoading
-} from '../../services/feed/slice';
+import { feedSelectors } from '../../services/feed/slice';
 import { getFeed } from '../../services/feed/actions';
 
 export const Feed: FC = () => {
-  const orders = useSelector(selectFeedOrders);
-  const isLoading = useSelector(selectIsFeedLoading);
-  const error = useSelector(selectFeedError);
+  const orders = useSelector(feedSelectors.selectOrders);
+  const isLoading = useSelector(feedSelectors.selectIsLoading);
+  const error = useSelector(feedSelectors.selectError);
 
   const dispatch = useDispatch();
 

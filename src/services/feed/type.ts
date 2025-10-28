@@ -1,4 +1,5 @@
 import { TOrder } from '@utils-types';
+import { AsyncState } from '../../utils/asyncHandlers';
 
 export type TFeedState = {
   orders: TOrder[];
@@ -6,6 +7,4 @@ export type TFeedState = {
     total: number;
     totalToday: number;
   };
-  isLoading: boolean;
-  error: string | null;
-};
+} & AsyncState;

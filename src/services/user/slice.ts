@@ -8,12 +8,17 @@ import {
 } from '@reduxjs/toolkit';
 import { loginUser, logoutUser, registerUser, updateUser } from './actions';
 import { TUser } from '@utils-types';
+import {
+  handleFulfilled,
+  handlePending,
+  handleRejected
+} from '../../utils/asyncHandlers';
 
 const initialState: TUserState = {
   user: null,
   isAuthChecked: false,
   error: null,
-  isAuthRequest: false
+  isLoading: false
 };
 
 export const userSlice = createSlice({
@@ -30,8 +35,8 @@ export const userSlice = createSlice({
   selectors: {
     selectUser: (state) => state.user,
     selectIsAuthChecked: (state) => state.isAuthChecked,
-    selectUserError: (state) => state.error,
-    selectIsAuthRequest: (state) => state.isAuthRequest
+    selectError: (state) => state.error,
+    selectIsLoading: (state) => state.isLoading
   },
   extraReducers: (builder) => {
     builder
@@ -44,24 +49,11 @@ export const userSlice = createSlice({
       .addMatcher(isFulfilled(loginUser, registerUser), (state, action) => {
         state.user = action.payload.user;
       })
-      .addMatcher(isFulfilled(), (state) => {
-        state.isAuthRequest = false;
-      })
-      .addMatcher(isPending(), (state) => {
-        state.isAuthRequest = true;
-        state.error = null;
-      })
-      .addMatcher(isRejected(), (state, action) => {
-        state.isAuthRequest = false;
-        state.error = action.error.message || 'Произошла неизвестная ошибка';
-      });
+      .addMatcher(isFulfilled(), handleFulfilled)
+      .addMatcher(isPending(), handlePending)
+      .addMatcher(isRejected(), handleRejected);
   }
 });
 
 export const { setUser, setIsAuthChecked } = userSlice.actions;
-export const {
-  selectUser,
-  selectIsAuthChecked,
-  selectUserError,
-  selectIsAuthRequest
-} = userSlice.selectors;
+export const userSelectors = userSlice.selectors;

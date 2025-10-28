@@ -1,8 +1,5 @@
 import { useSelector } from '../../services/store';
-import {
-  selectIngredientsError,
-  selectIsIngredientsLoading
-} from '../../services/ingredients/slice';
+import { ingredientsSelectors } from '../../services/ingredients/slice';
 
 import styles from './constructor-page.module.css';
 
@@ -12,8 +9,8 @@ import { Preloader } from '@ui';
 import { FC } from 'react';
 
 export const ConstructorPage: FC = () => {
-  const isLoading = useSelector(selectIsIngredientsLoading);
-  const error = useSelector(selectIngredientsError);
+  const isLoading = useSelector(ingredientsSelectors.selectIsLoading);
+  const error = useSelector(ingredientsSelectors.selectError);
 
   if (isLoading) {
     return <Preloader />;

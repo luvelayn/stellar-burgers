@@ -1,6 +1,11 @@
 import { TUserOrdersState } from './type';
 import { createSlice } from '@reduxjs/toolkit';
 import { getUserOrders } from './actions';
+import {
+  handleFulfilled,
+  handlePending,
+  handleRejected
+} from '../../utils/asyncHandlers';
 
 const initialState: TUserOrdersState = {
   orders: [],
@@ -13,29 +18,19 @@ export const userOrdersSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    selectUserOrders: (state) => state.orders,
-    selectUserOrdersError: (state) => state.error,
-    selectIsUserOrdersLoading: (state) => state.isLoading
+    selectOrders: (state) => state.orders,
+    selectError: (state) => state.error,
+    selectIsLoading: (state) => state.isLoading
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getUserOrders.pending, (state) => {
-        state.error = null;
-        state.isLoading = true;
-      })
       .addCase(getUserOrders.fulfilled, (state, action) => {
+        handleFulfilled(state);
         state.orders = action.payload.orders;
-        state.isLoading = false;
       })
-      .addCase(getUserOrders.rejected, (state, action) => {
-        state.error = action.error.message ?? 'Произошла неизвестная ошибка';
-        state.isLoading = false;
-      });
+      .addCase(getUserOrders.pending, handlePending)
+      .addCase(getUserOrders.rejected, handleRejected);
   }
 });
 
-export const {
-  selectUserOrders,
-  selectUserOrdersError,
-  selectIsUserOrdersLoading
-} = userOrdersSlice.selectors;
+export const userOrdersSelectors = userOrdersSlice.selectors;

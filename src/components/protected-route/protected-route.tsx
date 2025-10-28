@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { ProtectedRouteProps } from './type';
 import { useSelector } from '../../services/store';
-import { selectIsAuthChecked, selectUser } from '../../services/user/slice';
+import { userSelectors } from '../../services/user/slice';
 import { useLocation } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 import { Preloader } from '@ui';
@@ -10,8 +10,8 @@ export const ProtectedRoute: FC<ProtectedRouteProps> = ({
   children,
   onlyUnAuth = false
 }): React.JSX.Element => {
-  const user = useSelector(selectUser);
-  const isAuthChecked = useSelector(selectIsAuthChecked);
+  const user = useSelector(userSelectors.selectUser);
+  const isAuthChecked = useSelector(userSelectors.selectIsAuthChecked);
   const location = useLocation();
 
   if (!isAuthChecked) {

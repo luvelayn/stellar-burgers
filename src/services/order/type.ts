@@ -1,7 +1,6 @@
 import { TOrder } from '@utils-types';
+import { AsyncState } from '../../utils/asyncHandlers';
 
 export type TOrderState = {
-  isLoading: boolean;
-  error: string | null;
   order: TOrder | null;
-};
+} & AsyncState;

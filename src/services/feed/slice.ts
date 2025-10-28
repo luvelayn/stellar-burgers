@@ -1,6 +1,11 @@
 import { TFeedState } from './type';
 import { createSlice } from '@reduxjs/toolkit';
 import { getFeed } from './actions';
+import {
+  handleFulfilled,
+  handlePending,
+  handleRejected
+} from '../../utils/asyncHandlers';
 
 const initialState: TFeedState = {
   orders: [],
@@ -17,33 +22,22 @@ export const feedSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
-    selectFeedOrders: (state) => state.orders,
-    selectFeedStats: (state) => state.stats,
-    selectIsFeedLoading: (state) => state.isLoading,
-    selectFeedError: (state) => state.error
+    selectOrders: (state) => state.orders,
+    selectStats: (state) => state.stats,
+    selectIsLoading: (state) => state.isLoading,
+    selectError: (state) => state.error
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getFeed.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
       .addCase(getFeed.fulfilled, (state, action) => {
+        handleFulfilled(state);
         state.orders = action.payload.orders;
         state.stats.total = action.payload.total;
         state.stats.totalToday = action.payload.totalToday;
-        state.isLoading = false;
       })
-      .addCase(getFeed.rejected, (state, action) => {
-        state.error = action.error.message ?? 'Произошла неизвестная ошибка';
-        state.isLoading = false;
-      });
+      .addCase(getFeed.pending, handlePending)
+      .addCase(getFeed.rejected, handleRejected);
   }
 });
 
-export const {
-  selectFeedOrders,
-  selectFeedStats,
-  selectIsFeedLoading,
-  selectFeedError
-} = feedSlice.selectors;
+export const feedSelectors = feedSlice.selectors;

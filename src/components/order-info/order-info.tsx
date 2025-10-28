@@ -3,7 +3,7 @@ import { Preloader } from '@ui';
 import { OrderInfoUI } from '@ui';
 import { TIngredient } from '@utils-types';
 import { useDispatch, useSelector } from '../../services/store';
-import { selectIngredients } from '../../services/ingredients/slice';
+import { ingredientsSelectors } from '../../services/ingredients/slice';
 import { useParams } from 'react-router-dom';
 import { getOrderByNumber } from '../../services/order/actions';
 
@@ -28,7 +28,7 @@ export const OrderInfo: FC = () => {
     }
   }, []);
 
-  const ingredients = useSelector(selectIngredients);
+  const ingredients = useSelector(ingredientsSelectors.selectIngredients);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

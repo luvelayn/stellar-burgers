@@ -6,11 +6,16 @@ import {
 } from '@reduxjs/toolkit';
 import { createOrder, getOrderByNumber } from './actions';
 import { TOrderState } from './type';
+import {
+  handleFulfilled,
+  handlePending,
+  handleRejected
+} from '../../utils/asyncHandlers';
 
 const initialState: TOrderState = {
+  order: null,
   isLoading: false,
-  error: null,
-  order: null
+  error: null
 };
 
 export const orderSlice = createSlice({
@@ -24,8 +29,8 @@ export const orderSlice = createSlice({
   },
   selectors: {
     selectOrder: (state) => state.order,
-    selectOrderError: (state) => state.error,
-    selectIsOrderLoading: (state) => state.isLoading
+    selectError: (state) => state.error,
+    selectIsLoading: (state) => state.isLoading
   },
   extraReducers: (builder) => {
     builder
@@ -35,20 +40,11 @@ export const orderSlice = createSlice({
       .addCase(getOrderByNumber.fulfilled, (state, action) => {
         state.order = action.payload;
       })
-      .addMatcher(isFulfilled(), (state) => {
-        state.isLoading = false;
-      })
-      .addMatcher(isPending(), (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addMatcher(isRejected(), (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message ?? 'Произошла неизвестная ошибка';
-      });
+      .addMatcher(isFulfilled(), handleFulfilled)
+      .addMatcher(isPending(), handlePending)
+      .addMatcher(isRejected(), handleRejected);
   }
 });
 
 export const { clearOrder } = orderSlice.actions;
-export const { selectOrder, selectOrderError, selectIsOrderLoading } =
-  orderSlice.selectors;
+export const orderSelectors = orderSlice.selectors;

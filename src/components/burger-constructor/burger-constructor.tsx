@@ -2,18 +2,13 @@ import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
 import { useDispatch, useSelector } from '../../services/store';
-import {
-  clearOrder,
-  selectIsOrderLoading,
-  selectOrder,
-  selectOrderError
-} from '../../services/order/slice';
+import { clearOrder, orderSelectors } from '../../services/order/slice';
 import { createOrder } from '../../services/order/actions';
 import {
   clearBurgerConstructor,
   selectBurgerConstructor
 } from '../../services/burgerConstructor/slice';
-import { selectUser } from '../../services/user/slice';
+import { userSelectors } from '../../services/user/slice';
 import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
@@ -21,10 +16,10 @@ export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
 
   const constructorItems = useSelector(selectBurgerConstructor);
-  const order = useSelector(selectOrder);
-  const isLoading = useSelector(selectIsOrderLoading);
-  const error = useSelector(selectOrderError);
-  const user = useSelector(selectUser);
+  const order = useSelector(orderSelectors.selectOrder);
+  const isLoading = useSelector(orderSelectors.selectIsLoading);
+  const error = useSelector(orderSelectors.selectError);
+  const user = useSelector(userSelectors.selectUser);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || isLoading) return;
