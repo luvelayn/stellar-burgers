@@ -26,7 +26,7 @@ export const ingredientsSlice = createSlice({
     builder
       .addCase(getIngredients.fulfilled, (state, action) => {
         handleFulfilled(state);
-        state.ingredients = action.payload;
+        state.ingredients = action.payload.data;
       })
       .addCase(getIngredients.pending, handlePending)
       .addCase(getIngredients.rejected, handleRejected);

@@ -5,30 +5,17 @@ import {
   loginUserApi,
   logoutApi,
   registerUserApi,
-  TLoginData,
-  TRegisterData,
   updateUserApi
 } from '@api';
 import { setIsAuthChecked, setUser } from './slice';
 
-export const loginUser = createAsyncThunk(
-  'user/login',
-  async (data: TLoginData) => loginUserApi(data)
-);
+export const loginUser = createAsyncThunk('user/login', loginUserApi);
 
-export const logoutUser = createAsyncThunk('user/logout', async () =>
-  logoutApi()
-);
+export const logoutUser = createAsyncThunk('user/logout', logoutApi);
 
-export const registerUser = createAsyncThunk(
-  'user/register',
-  async (data: TRegisterData) => registerUserApi(data)
-);
+export const registerUser = createAsyncThunk('user/register', registerUserApi);
 
-export const updateUser = createAsyncThunk(
-  'user/update',
-  async (data: Partial<TRegisterData>) => updateUserApi(data)
-);
+export const updateUser = createAsyncThunk('user/update', updateUserApi);
 
 export const checkUserAuth = createAsyncThunk(
   'user/checkUserAuth',

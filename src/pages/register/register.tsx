@@ -1,14 +1,18 @@
-import { FC, SyntheticEvent, useState } from 'react';
+import { FC, SyntheticEvent } from 'react';
 import { RegisterUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import { registerUser } from '../../services/user/actions';
 import { userSelectors } from '../../services/user/slice';
 import { Preloader } from '@ui';
+import { useForm } from '../../hooks/useForm';
+import { TRegisterData } from '@api';
 
 export const Register: FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, handleChange } = useForm<TRegisterData>({
+    name: '',
+    email: '',
+    password: ''
+  });
 
   const dispatch = useDispatch();
   const error = useSelector(userSelectors.selectError);
@@ -16,7 +20,7 @@ export const Register: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(registerUser({ email, password, name }));
+    dispatch(registerUser(values));
   };
 
   if (isLoading) {
@@ -26,12 +30,8 @@ export const Register: FC = () => {
   return (
     <RegisterUI
       errorText={error ? 'Ошибка регистрации' : ''}
-      email={email}
-      userName={name}
-      password={password}
-      setEmail={setEmail}
-      setPassword={setPassword}
-      setUserName={setName}
+      registerData={values}
+      handleChange={handleChange}
       handleSubmit={handleSubmit}
     />
   );
