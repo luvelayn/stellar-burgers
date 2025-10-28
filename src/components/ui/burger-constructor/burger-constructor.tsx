@@ -15,6 +15,7 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
   orderRequest,
   price,
   orderModalData,
+  orderError,
   onOrderClick,
   closeOrderModal
 }) => (
@@ -93,11 +94,16 @@ export const BurgerConstructorUI: FC<BurgerConstructorUIProps> = ({
       </Modal>
     )}
 
+    {orderError && (
+      <Modal onClose={closeOrderModal} title={'Упс!'}>
+        <div>
+          <p className='text_type_main-default'>Произошла ошибка:(</p>
+        </div>
+      </Modal>
+    )}
+
     {orderModalData && (
-      <Modal
-        onClose={closeOrderModal}
-        title={orderRequest ? 'Оформляем заказ...' : ''}
-      >
+      <Modal onClose={closeOrderModal} title={''}>
         <OrderDetailsUI orderNumber={orderModalData.number} />
       </Modal>
     )}
