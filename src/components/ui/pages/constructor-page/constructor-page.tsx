@@ -9,11 +9,22 @@ import { BurgerIngredients, BurgerConstructor } from '@components';
 export const ConstructorPageUI: FC<ConstructorPageUIProps> = ({
   isLoading,
   error
-}) => (
-  <>
-    {isLoading ? (
-      <Preloader />
-    ) : (
+}) => {
+  if (isLoading) {
+    return <Preloader />;
+  }
+
+  if (error) {
+    return (
+      <div style={{ margin: 'auto' }} className='text text_type_main-medium'>
+        <p>Упс! Кажется, у нас пропали все ингредиенты:(</p>
+        <p>Попробуйте зайти позже.</p>
+      </div>
+    );
+  }
+
+  return (
+    <>
       <main className={styles.containerMain}>
         <h1
           className={`${styles.title} text text_type_main-large mt-10 mb-5 pl-5`}
@@ -21,14 +32,10 @@ export const ConstructorPageUI: FC<ConstructorPageUIProps> = ({
           Соберите бургер
         </h1>
         <div className={`${styles.main} pl-5 pr-5`}>
-          {error ? (
-            <div>Ошибка загрузки ингредиентов: {error}</div>
-          ) : (
-            <BurgerIngredients />
-          )}
+          <BurgerIngredients />
           <BurgerConstructor />
         </div>
       </main>
-    )}
-  </>
-);
+    </>
+  );
+};

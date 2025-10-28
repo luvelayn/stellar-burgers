@@ -22,7 +22,9 @@ export const Register: FC = () => {
     dispatch(registerUser({ email, password, name }));
   };
 
-  if (isAuthRequest) return <Preloader />;
+  if (isAuthRequest) {
+    return <Preloader />;
+  }
 
   return (
     <RegisterUI

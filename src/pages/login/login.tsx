@@ -21,7 +21,9 @@ export const Login: FC = () => {
     dispatch(loginUser({ email, password }));
   };
 
-  if (isAuthRequest) return <Preloader />;
+  if (isAuthRequest) {
+    return <Preloader />;
+  }
 
   return (
     <LoginUI
