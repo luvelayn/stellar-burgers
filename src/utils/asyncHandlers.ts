@@ -1,6 +1,8 @@
 import { Draft, PayloadAction } from '@reduxjs/toolkit';
 import { SerializedError } from '@reduxjs/toolkit';
 
+export const DEFAULT_ERROR_MESSAGE = 'Произошла неизвестная ошибка';
+
 export interface AsyncState {
   isLoading: boolean;
   error: string | null;
@@ -20,5 +22,5 @@ export const handleRejected = <T extends AsyncState>(
   action: PayloadAction<unknown, string, unknown, SerializedError>
 ) => {
   state.isLoading = false;
-  state.error = action.error.message || 'Произошла неизвестная ошибка';
+  state.error = action.error.message || DEFAULT_ERROR_MESSAGE;
 };

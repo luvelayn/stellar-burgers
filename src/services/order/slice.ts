@@ -40,9 +40,9 @@ export const orderSlice = createSlice({
       .addCase(getOrderByNumber.fulfilled, (state, action) => {
         state.order = action.payload;
       })
-      .addMatcher(isFulfilled(), handleFulfilled)
-      .addMatcher(isPending(), handlePending)
-      .addMatcher(isRejected(), handleRejected);
+      .addMatcher(isFulfilled(createOrder, getOrderByNumber), handleFulfilled)
+      .addMatcher(isPending(createOrder, getOrderByNumber), handlePending)
+      .addMatcher(isRejected(createOrder, getOrderByNumber), handleRejected);
   }
 });
 
