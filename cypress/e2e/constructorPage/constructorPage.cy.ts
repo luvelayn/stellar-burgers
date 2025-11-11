@@ -6,7 +6,7 @@ describe('Constructor Page', () => {
     );
 
     // Посещаем страницу конструктора
-    cy.visit('http://localhost:4000');
+    cy.visit('/');
 
     // Ждем загрузки ингредиентов
     cy.wait('@getIngredients');
