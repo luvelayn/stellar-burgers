@@ -49,9 +49,18 @@ export const userSlice = createSlice({
       .addMatcher(isFulfilled(loginUser, registerUser), (state, action) => {
         state.user = action.payload.user;
       })
-      .addMatcher(isFulfilled(), handleFulfilled)
-      .addMatcher(isPending(), handlePending)
-      .addMatcher(isRejected(), handleRejected);
+      .addMatcher(
+        isFulfilled(logoutUser, updateUser, loginUser, registerUser),
+        handleFulfilled
+      )
+      .addMatcher(
+        isPending(logoutUser, updateUser, loginUser, registerUser),
+        handlePending
+      )
+      .addMatcher(
+        isRejected(logoutUser, updateUser, loginUser, registerUser),
+        handleRejected
+      );
   }
 });
 
