@@ -80,12 +80,6 @@ src/
 npm install
 ```
 
-### Переменные окружения
-Создайте файл `.env` в корне проекта:
-```env
-BURGER_API_URL=https://norma.nomoreparties.space/api
-```
-
 ### Запуск в режиме разработки
 ```bash
 npm start
@@ -180,7 +174,3 @@ npm run commit
 - ESLint для проверки JavaScript/TypeScript
 - Prettier для форматирования
 - EditorConfig для единообразия настроек редактора
-
-## 📄 Лицензия
-
-Проект создан в образовательных целях в рамках курса Яндекс.Практикум.
